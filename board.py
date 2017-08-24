@@ -2,7 +2,7 @@ from square import Square
 
 
 class Board:
-
+    """ scrabble board object """
     def __init__(self):
         self.size = 15 #TODO: add try/except clause here
         self.grid = self.build_grid()

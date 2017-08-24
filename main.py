@@ -1,5 +1,7 @@
-from alph_py import Scrabble
+from scrabble import Scrabble, Bag
 
-scrabble = Scrabble()
+s = Scrabble(players=2)
+
+s.add_first_tiles()
 
 stop = None
