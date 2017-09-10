@@ -1,20 +1,22 @@
 from board import Board
 from bag import Bag
+from scoreboard import Scoreboard
 from tileholder import Tileholder
 from yaml import load
 
 import random
 
-#TODO: add scoreboard
+# TODO: complete scoreboard
+# TODO: add functionality to record score when tiles placed on board
 
 
 class Scrabble:
     """ main game object """
     def __init__(self, config_file_path='config/scrabble_config.yml', players=1):
-        self.config_file_path = config_file_path
-        self.config = self.load_config()
+        self.config = self.load_config(config_file_path)
         self.board = Board()  # creates board object along with values for each square
         self.bag = Bag(config=self.config)
+        self.scoreboard = Scoreboard()
         self.players = players
         self.tileholders = dict()
         self.add_tileholders()
@@ -25,9 +27,9 @@ class Scrabble:
     def __repr__(self):
         return "{0.__class__.__name__}".format(self)
 
-    def load_config(self):
+    def load_config(self, config_file_path):
         """ loads configuration file """
-        stream = open(self.config_file_path, 'r')
+        stream = open(config_file_path, 'r')
         config = load(stream)
         return config
 
@@ -46,7 +48,7 @@ class Scrabble:
     def pick_first_tiles(self):
         """ picks first seven tiles for every player via grab_more_tiles method """
         for i in self.tileholders.keys():
-            self.grab_tiles(player=i)
+            self.get_tiles(player=i)
         return None
 
     def add_word(self, player, word, coords):  # word: 'CAT', coords: [(7, 7), (7, 8), (7, 9)]
@@ -64,9 +66,13 @@ class Scrabble:
                     elif not req_letter.isalpha():
                         raise ValueError("{} is not a letter of the alphabet.  Please re-enter word."
                                          .format(req_letter))
+
+            # add score
+            # points =
+            # player, word, points, turn, dls, tls, dws, tws
         return True
 
-    def grab_more_tiles(self, player=None):
+    def get_tiles(self, player=None):
         """adds more tiles to tileholder (max: 7)"""
         try:
             self.tileholders[player]

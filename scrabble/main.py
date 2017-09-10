@@ -21,6 +21,6 @@ s.add_word(1, word, coords)
             # CAT
            # { player: [1], word: { C: (7, 7), A: (7, 8), T: (7, 9) }
 
-s.grab_more_tiles(player=1)
+s.get_tiles(player=1)
 
 stop = None

@@ -6,7 +6,6 @@ class Tileholder:
     def __init__(self):
         self.tiles = list()
         self.tile_count = self.get_tile_count()
-        pass
 
     def __str__(self):
         pass
