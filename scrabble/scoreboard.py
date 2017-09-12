@@ -1,5 +1,8 @@
 import sqlite3
 
+# (PLAYER, WORD, POINTS, TURN, XCOORD, YCOORD, DLS, TLS, DWS, TWS)
+
+
 class Scoreboard:
 
     def __init__(self, db_name='db/scoreboard.db'):
@@ -16,15 +19,15 @@ class Scoreboard:
         return sqlite3.connect(db_name)
 
     def create_table(self):
-        sql = '''CREATE TABLE scoreboard
+        sql = '''CREATE TABLE IF NOT EXISTS scoreboard
         (
-            ID INT PRIMARY KEY NOT NULL,
             PLAYER INT NOT NULL,
             NAME CHAR(30),
             WORD CHAR(15),
             POINTS INT,
-            TURN INT,
-            COORDS ,
+            TURN INT NOT NULL,
+            START_COORD CHAR(5) NOT NULL,
+            END_COORD CHAR(5) NOT NULL,
             DLS INT,
             TLS INT,
             DWS INT,
@@ -32,13 +35,26 @@ class Scoreboard:
         );'''
 
         self.dbh.execute(sql)
+        self.dbh.commit()
         return True
 
-    def add_score(self, player=None, word=None, points=None, turn=None, dls=None, tls=None, dws=None, tws=None):
+    def add_score(self, player=None, name=None, word=None, points=None, turn=None, start_coord=None, end_coord=None, dls=None, tls=None,
+                  dws=None, tws=None):
+
+        sql = "INSERT INTO scoreboard (PLAYER, NAME, WORD, POINTS, TURN, START_COORD, END_COORD, DLS, TLS, DWS, TWS) \
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+
+        self.dbh.execute(sql, (player, name, word, points, turn, start_coord, end_coord, dls, tls, dws, tws))
+        self.dbh.commit()
+        return True
+
+    def get_last_word_score(self, player=None, turn=None):
+
         sql = '''
-        INSERT INTO scoreboard (PLAYER, WORD, POINTS, TURN, DLS, TLS, DWS, TWS)
-        VALUES ({}, {}, {}, {}, {}, {}, {}, {});
-        '''.format(player, word, points, turn, dls, tls, dws, tws)
-
-        self.dbh.execute(sql)
-        return True
+            SELECT * \
+            FROM scoreboard
+        '''
+        c = self.dbh.cursor()
+        c.execute("SELECT * FROM scoreboard WHERE player = ? AND turn = ?", (player, turn))
+        result = c.fetchall()
+        return result

@@ -19,9 +19,9 @@ class Bag:
 
     def construct_bag(self):
         """ adds tile objects to bag object """
-        testing = None
+        testing = self._are_we_testing()
 
-        alphabet = self.config['test']['bag']['letters'].keys() if testing \
+        alphabet = self.config['test']['bag']['word'].lower() if testing \
             else self.config['bag']['letters'].keys()
 
         for letter in alphabet:
@@ -32,19 +32,9 @@ class Bag:
             count = 0
 
             while count < bag_amount:
-                if testing:
-                    c = Tile(letter='C', point_val=point_val, id=count+1, bag_amount=bag_amount)
-                    a = Tile(letter='A', point_val=point_val, id=count+1, bag_amount=bag_amount)
-                    t = Tile(letter='T', point_val=point_val, id=count+1, bag_amount=bag_amount)
-                    cat = [c, a, t]
-
-                    for tile in cat:
-                        self.contents.append(tile)
-                    break
-                else:
-                    tile = Tile(letter=letter.upper(), point_val=point_val, id=count+1, bag_amount=bag_amount)
-                    self.contents.append(tile)
-                    count += 1
+                tile = Tile(letter=letter.upper(), point_val=point_val, id=count+1, bag_amount=bag_amount)
+                self.contents.append(tile)
+                count += 1
 
         # check tile amount
         tile_count = len(self.contents)
@@ -53,3 +43,8 @@ class Bag:
                 tile_count))
 
         return None
+
+    @classmethod
+    def _are_we_testing(self):
+        test_params = sys.argv[1].split('=')[1]
+        return True if test_params.upper() == 'Y' else None

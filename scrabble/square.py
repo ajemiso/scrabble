@@ -1,10 +1,10 @@
 class Square:
 
     def __init__(self, is_dls=None, is_tls=None, is_dws=None, is_tws=None, tile=None):
-        self.dls = is_dls
-        self.tls = is_tls
-        self.dws = is_dws
-        self.tws = is_tws
+        self.dls = is_dls if is_dls != 0 else 0
+        self.tls = is_tls if is_tls != 0 else 0
+        self.dws = is_dws if is_dws != 0 else 0
+        self.tws = is_tws if is_tws != 0 else 0
         self.tile = tile
         self.value = self.get_value()
 

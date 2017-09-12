@@ -3,9 +3,12 @@ import random
 
 class Tileholder:
 
-    def __init__(self):
-        self.tiles = list()
+    def __init__(self, config):
+        self.config = config
+        self.tiles = dict()
+        self.create_letter_values()
         self.tile_count = self.get_tile_count()
+        self.turn_number = 1
 
     def __str__(self):
         pass
@@ -14,18 +17,19 @@ class Tileholder:
         pass
 
     def get_tile_count(self):
-        self.tile_count = len(self.tiles)
-        return self.tile_count
+        tile_count = 0
+        for tiles in self.tiles.values():
+            tile_count += len(tiles)
+        return tile_count
 
-    def add_tiles(self, tiles):
-        if sum(len(tiles), len(self.tiles)) <= 7:
-            self.tiles.append(tiles)
-            return 1
-        else:
-            return None
+    # def add_tiles(self, tiles):
+    #     if sum(len(tiles), len(self.tiles)) <= 7:
+    #         self.tiles.append(tiles)
+    #         return 1
+    #     else:
+    #         return None
 
-    def remove_tiles(self, tiles):
-        pass
-
-    def view_tiles(self):
-        pass
+    def create_letter_values(self):
+        for i in self.config['bag']['letters'].keys():
+            self.tiles[i.upper()] = list()
+        return None
