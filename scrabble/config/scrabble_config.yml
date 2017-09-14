@@ -87,10 +87,13 @@ bag:
 test:
   bag:
     letters:
-      z:
-        bag_amount: 22
-        point_val: 10
-      o:
-        bag_amount: 18
+      c:
+        bag_amount: 10
+        point_val: 3
+      a:
+        bag_amount: 10
         point_val: 1
-    word: 'ZOO'
+      t:
+        bag_amount: 10
+        point_val: 1
+    word: 'CAT'

@@ -1,5 +1,6 @@
 import sqlite3
 
+
 # (PLAYER, WORD, POINTS, TURN, XCOORD, YCOORD, DLS, TLS, DWS, TWS)
 
 
@@ -31,7 +32,8 @@ class Scoreboard:
             DLS INT,
             TLS INT,
             DWS INT,
-            TWS INT
+            TWS INT,
+            TIME_PLAYED TIMESTAMP
         );'''
 
         self.dbh.execute(sql)
@@ -39,22 +41,23 @@ class Scoreboard:
         return True
 
     def add_score(self, player=None, name=None, word=None, points=None, turn=None, start_coord=None, end_coord=None, dls=None, tls=None,
-                  dws=None, tws=None):
+                  dws=None, tws=None, time_played=None):
 
-        sql = "INSERT INTO scoreboard (PLAYER, NAME, WORD, POINTS, TURN, START_COORD, END_COORD, DLS, TLS, DWS, TWS) \
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        sql = "INSERT INTO scoreboard (PLAYER, NAME, WORD, POINTS, TURN, START_COORD, END_COORD, DLS, TLS, DWS, TWS," \
+              " TIME_PLAYED) \
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
-        self.dbh.execute(sql, (player, name, word, points, turn, start_coord, end_coord, dls, tls, dws, tws))
+        self.dbh.execute(sql, (player, name, word, points, turn, start_coord, end_coord, dls, tls, dws, tws, time_played))
         self.dbh.commit()
         return True
 
-    def get_last_word_score(self, player=None, turn=None):
+    def get_word_score(self, player=None, turn=None):
 
         sql = '''
             SELECT * \
             FROM scoreboard
         '''
         c = self.dbh.cursor()
-        c.execute("SELECT * FROM scoreboard WHERE player = ? AND turn = ?", (player, turn))
+        c.execute("SELECT points FROM scoreboard WHERE player = ? AND turn = ?", (player, turn))
         result = c.fetchall()
         return result
